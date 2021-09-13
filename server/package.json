@@ -1,0 +1,21 @@
+{
+  "name": "meme-verse-server-shiha6",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Saiful Islam",
+  "license": "MIT",
+  "scripts": {
+    "dev:server": "nodemon dist/index",
+    "watch": "tsc -w"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.5"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "nodemon": "^2.0.12"
+  }
+}

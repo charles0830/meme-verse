@@ -1,0 +1,17 @@
+{
+  "name": "meme-verse",
+  "version": "1.0.0",
+  "description": "A meme sharing web appliction.",
+  "main": "index.js",
+  "author": "saifulshihab <shihabmd1970@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "postinstall": "husky install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
+    "husky": "^7.0.2"
+  }
+}
