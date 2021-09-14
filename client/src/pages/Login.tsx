@@ -1,10 +1,16 @@
-import { Box, Flex, Button, Spacer } from '@chakra-ui/react';
+import { Box, Button, Flex, Spacer } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { Link } from 'react-router-dom';
+import * as yup from 'yup';
 import InputField from '../components/InputField';
 import Wrapper from '../components/Wrapper';
 
 const Login = () => {
+  const fieldValidationSchema = yup.object({
+    usernameOrEmail: yup.string().required('Username or email required!'),
+    password: yup.string().required('Password requied!'),
+  });
+
   return (
     <Wrapper varient="small">
       <Formik
@@ -12,6 +18,7 @@ const Login = () => {
         onSubmit={async (values) => {
           console.log(values);
         }}
+        validationSchema={fieldValidationSchema}
       >
         {({ isSubmitting }) => (
           <Form>
