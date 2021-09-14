@@ -40,7 +40,11 @@
     "import/extensions": [0, "ignorePackages"],
     "jsx-a11y/click-events-have-key-events": [0],
     "no-unused-expressions": "off",
-    "no-void": "off"
+    "no-void": "off",
+    "react/jsx-props-no-spreading": [0],
+    "@typescript-eslint/no-explicit-any": [0],
+    "react/require-default-props": [0],
+    "react/prop-types": 0
   },
   "settings": {
     "import/resolver": {
