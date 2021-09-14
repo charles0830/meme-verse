@@ -1,6 +1,9 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './config/db';
+import { errorHandler, notFound } from './middleware/errorMiddleware';
+import userRoutes from './routes/userRoutes';
+import memeRoutes from './routes/memeRoutes';
 
 // load environment variables
 dotenv.config();
@@ -18,6 +21,12 @@ const main = async () => {
   app.get('/', (req, res) => {
     res.send('Meme-verse server running and up...');
   });
+  app.use('/api/user', userRoutes);
+  app.use('/api/meme', memeRoutes);
+
+  // error middleware
+  app.use(notFound);
+  app.use(errorHandler);
 
   // listening
   const PORT = process.env.PORT || 8080;
