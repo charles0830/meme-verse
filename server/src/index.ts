@@ -4,6 +4,7 @@ import connectDB from './config/db';
 import { errorHandler, notFound } from './middleware/errorMiddleware';
 import userRoutes from './routes/userRoutes';
 import memeRoutes from './routes/memeRoutes';
+import cors from 'cors';
 
 // load environment variables
 dotenv.config();
@@ -16,6 +17,13 @@ const main = async () => {
   const app = express();
 
   app.use(express.json());
+
+  // cors
+  app.use(
+    cors({
+      origin: ['http://localhost:3000'],
+    })
+  );
 
   // routes
   app.get('/', (req, res) => {

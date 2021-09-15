@@ -1,10 +1,25 @@
-import { Box, Flex, Button, Spacer } from '@chakra-ui/react';
+import { Box, Flex, Text, Button, Spacer } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
+import { useEffect } from 'react';
+import { BiErrorAlt } from 'react-icons/bi';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
 import * as yup from 'yup';
 import InputField from '../components/InputField';
 import Wrapper from '../components/Wrapper';
+import { register } from '../redux/actions/UserAction';
+import { useAppSelector } from '../utils/reduxHook';
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const { loading, success, error } = useAppSelector((state) => state.register);
+
+  useEffect(() => {
+    if (success) history.push('/t');
+  }, [history, success]);
+
   const fieldValidationSchema = yup.object({
     email: yup.string().email().required('Email required!'),
     username: yup
@@ -24,7 +39,7 @@ const Register = () => {
       <Formik
         initialValues={{ email: '', username: '', password: '' }}
         onSubmit={async (values) => {
-          console.log(values);
+          dispatch(register(values));
         }}
         validationSchema={fieldValidationSchema}
       >
@@ -48,13 +63,31 @@ const Register = () => {
                   mt={4}
                   type="submit"
                   colorScheme="messenger"
-                  isLoading={isSubmitting}
+                  disabled={isSubmitting}
+                  isLoading={loading}
                   size="sm"
                 >
                   Register
                 </Button>
                 <Spacer />
               </Flex>
+              {error ? (
+                <Box
+                  mt="2"
+                  w="full"
+                  p="2"
+                  px="4"
+                  bg="red.100"
+                  fontSize="sm"
+                  fontWeight="semibold"
+                  color="red.500"
+                  d="flex"
+                  alignItems="center"
+                >
+                  <BiErrorAlt />
+                  <Text ml="2">{error}</Text>
+                </Box>
+              ) : null}
             </Box>
           </Form>
         )}

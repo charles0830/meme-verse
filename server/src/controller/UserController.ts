@@ -22,7 +22,10 @@ export const registerUser = asyncHandler(
         });
 
         if (newUser) {
-          res.status(201).json(newUser);
+          res.status(201).json({
+            _id: newUser._id,
+            token: await generateToken(newUser._id),
+          });
         } else {
           res.status(500);
           throw new Error('Registration failed!');

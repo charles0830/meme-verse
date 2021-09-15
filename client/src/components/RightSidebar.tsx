@@ -1,7 +1,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
-import { CgProfile } from 'react-icons/all';
+import { CgProfile, IoNotificationsOutline, RiMoreFill } from 'react-icons/all';
 import { CgFeed } from 'react-icons/cg';
+import { GrSettingsOption } from 'react-icons/gr';
 import RightSidebarItem from './RightSidebarItem';
 
 const RightSidebar: React.FC = () => {
@@ -13,6 +14,17 @@ const RightSidebar: React.FC = () => {
         routePath="profile"
       />
       <RightSidebarItem text="Feed" icon={<CgFeed />} routePath="newsfeed" />
+      <RightSidebarItem
+        text="Notification"
+        icon={<IoNotificationsOutline />}
+        routePath="notification"
+      />
+      <RightSidebarItem
+        text="Settings"
+        icon={<GrSettingsOption />}
+        routePath="settings"
+      />
+      <RightSidebarItem text="More" icon={<RiMoreFill />} routePath="more" />
     </Box>
   );
 };

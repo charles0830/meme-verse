@@ -21,10 +21,11 @@ const RightSidebarItem: React.FC<RightSidebarItemProps> = ({
         cursor="pointer"
         fontWeight="semibold"
         d="flex"
-        px="3"
+        px="4"
         borderRadius="40px"
         _hover={{ color: '#125D98' }}
         alignItems="center"
+        my="2"
       >
         {icon}
         <Text ml="2">{text}</Text>

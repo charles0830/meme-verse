@@ -1,11 +1,26 @@
-import { Box, Button, Flex, Spacer } from '@chakra-ui/react';
+import { Box, Button, Flex, Spacer, Text } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BiErrorAlt } from 'react-icons/bi';
+import { useDispatch } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 import * as yup from 'yup';
 import InputField from '../components/InputField';
 import Wrapper from '../components/Wrapper';
+import { login } from '../redux/actions/UserAction';
+import { useAppSelector } from '../utils/reduxHook';
 
-const Login = () => {
+const Login: React.FC = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { isAuthenticated, loading, error } = useAppSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (isAuthenticated) history.push('/t');
+  }, [history, isAuthenticated]);
+
   const fieldValidationSchema = yup.object({
     usernameOrEmail: yup.string().required('Username or email required!'),
     password: yup.string().required('Password requied!'),
@@ -16,12 +31,12 @@ const Login = () => {
       <Formik
         initialValues={{ usernameOrEmail: '', password: '' }}
         onSubmit={async (values) => {
-          console.log(values);
+          dispatch(login(values));
         }}
         validationSchema={fieldValidationSchema}
       >
-        {({ isSubmitting }) => (
-          <Form>
+        {({ isSubmitting, handleSubmit }) => (
+          <Form onSubmit={handleSubmit}>
             <Box d="flex" flexDirection="column" p={3}>
               <InputField
                 name="usernameOrEmail"
@@ -40,14 +55,41 @@ const Login = () => {
                   mt={4}
                   type="submit"
                   colorScheme="messenger"
-                  isLoading={isSubmitting}
+                  isLoading={loading}
+                  disabled={isSubmitting}
                   size="sm"
                 >
                   Login
                 </Button>
                 <Spacer />
-                <Link to="/forgot-password">forgot password</Link>
+                <Link to="/forgot-password">
+                  <Text fontSize="sm" color="blue.500">
+                    forgot password
+                  </Text>
+                </Link>
               </Flex>
+              <Link to="/register">
+                <Box mt="2" fontSize="sm" color="blue.500">
+                  Not Registered? Create Account.
+                </Box>
+              </Link>
+              {error ? (
+                <Box
+                  mt="2"
+                  w="full"
+                  p="2"
+                  px="4"
+                  bg="red.100"
+                  fontSize="sm"
+                  fontWeight="semibold"
+                  color="red.500"
+                  d="flex"
+                  alignItems="center"
+                >
+                  <BiErrorAlt />
+                  <Text ml="2">{error}</Text>
+                </Box>
+              ) : null}
             </Box>
           </Form>
         )}

@@ -1,20 +1,19 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { Redirect, Route, RouteProps } from 'react-router-dom';
+import { useAppSelector } from './reduxHook';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface PrivateRouteProps extends RouteProps {}
 
 const PrivateRoute = ({ component, ...rest }: PrivateRouteProps) => {
-  const data: any = true;
-  const loading: any = false;
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
+
   return (
     <Route
       {...rest}
       render={(props) => {
-        if (!data || loading) return null;
-
         // user not logged in
-        if (!data) {
+        if (!isAuthenticated) {
           return (
             <Redirect
               to={{

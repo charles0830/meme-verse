@@ -9,7 +9,7 @@ const Dashboard = () => {
   const { path } = useRouteMatch();
 
   return (
-    <Flex>
+    <Flex w="full" maxH="100vh">
       <Box flex={1}>
         <Switch>
           <Route path={`${path}/newsfeed`} component={Feed} />
