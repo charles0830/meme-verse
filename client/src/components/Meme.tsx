@@ -6,9 +6,10 @@ import { MemeType } from '../types';
 
 interface MemeProps {
   meme: MemeType;
+  totalComments: number;
 }
 
-const Meme: React.FC<MemeProps> = ({ meme }) => {
+const Meme: React.FC<MemeProps> = ({ meme, totalComments }) => {
   return (
     <Link to={`/t/meme/${meme._id}`}>
       <Box
@@ -64,12 +65,12 @@ const Meme: React.FC<MemeProps> = ({ meme }) => {
               </Button>
               <Box d="flex" alignItems="center">
                 <BiComment />
-                <Text ml="1">12</Text>
+                <Text ml="1">{totalComments}</Text>
               </Box>
             </Flex>
             <Spacer />
             <Text fontWeight="thin" fontStyle="italic">
-              {meme.user.username}
+              @{meme.user.username}
             </Text>
           </Box>
         </Box>

@@ -13,7 +13,6 @@ import { useDispatch } from 'react-redux';
 import Loader from '../components/Loader';
 import Meme from '../components/Meme';
 import { getMemes } from '../redux/actions/MemeAction';
-import { MemeType } from '../types';
 import { useAppSelector } from '../utils/reduxHook';
 
 const Feed = () => {
@@ -53,8 +52,12 @@ const Feed = () => {
         </Alert>
       ) : memes?.length > 0 ? (
         <Grid templateColumns="repeat(3, 1fr)" gap={2}>
-          {memes.map((meme: MemeType) => (
-            <Meme key={meme._id} meme={meme} />
+          {memes.map((meme: any) => (
+            <Meme
+              key={meme._id}
+              meme={meme.meme}
+              totalComments={meme.totalComments}
+            />
           ))}
         </Grid>
       ) : (

@@ -3,7 +3,7 @@ import { model, Schema, Types } from 'mongoose';
 interface Comment {
   memeId: typeof Types.ObjectId;
   comment: string;
-  userId: typeof Types.ObjectId;
+  userId: string;
 }
 
 const schema = new Schema<Comment>(
@@ -18,8 +18,7 @@ const schema = new Schema<Comment>(
       required: true,
     },
     userId: {
-      type: Types.ObjectId,
-      ref: 'User',
+      type: String,
       required: true,
     },
   },
