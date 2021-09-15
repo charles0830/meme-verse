@@ -2,6 +2,9 @@ import axios from 'axios';
 import { Dispatch } from 'redux';
 import { baseURL } from '../../baseURL';
 import {
+  GET_PROFILE_FAILED,
+  GET_PROFILE_REQUEST,
+  GET_PROFILE_SUCCESS,
   LOGIN_FAILED,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -100,3 +103,34 @@ export const devSignout = () => async (dispatch: Dispatch) => {
     type: LOGOUT,
   });
 };
+// get user profile
+export const getProfile =
+  (userId: any) => async (dispatch: Dispatch, getState: any) => {
+    try {
+      dispatch({
+        type: GET_PROFILE_REQUEST,
+      });
+
+      const {
+        auth: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      const { data } = await axios.get(`${baseURL}/api/user/${userId}`, config);
+      dispatch({
+        type: GET_PROFILE_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: GET_PROFILE_FAILED,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

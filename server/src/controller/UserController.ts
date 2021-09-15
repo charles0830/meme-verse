@@ -67,3 +67,24 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
     throw new Error('Invalid email or username!');
   }
 });
+// desc: get user profile
+// method: POST
+export const getProfile = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.params.userId;
+  const user = await UserModel.findById(userId);
+  if (user) {
+    if (user._id.toString() === req.user._id.toString()) {
+      res.status(200).json({
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+      });
+    } else {
+      res.status(403);
+      throw new Error('You are not authorized to do this!');
+    }
+  } else {
+    res.status(404);
+    throw new Error('USer not found!');
+  }
+});

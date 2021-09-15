@@ -2,11 +2,16 @@ import { combineReducers, createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
-import { loginReducer, registerReducer } from './reducers/UserReducer';
+import {
+  getProfileReducer,
+  loginReducer,
+  registerReducer,
+} from './reducers/UserReducer';
 
 const reducer = combineReducers({
   auth: loginReducer,
   register: registerReducer,
+  profileGet: getProfileReducer,
 });
 
 const verifyToken = (token: string, lsItem: string): boolean => {
