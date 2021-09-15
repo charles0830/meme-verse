@@ -3,6 +3,7 @@ import { Box, Flex, Text } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../utils/reduxHook';
 import { getProfile } from '../redux/actions/UserAction';
+import Loader from '../components/Loader';
 
 const Profile: React.FC = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const Profile: React.FC = () => {
   return (
     <Box>
       {loading ? (
-        'Loading'
+        <Loader />
       ) : (
         <Flex alignItems="center" mb="2">
           <Box w="100px" h="100px" borderRadius="full">
