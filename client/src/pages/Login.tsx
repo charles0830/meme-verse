@@ -1,7 +1,14 @@
-import { Box, Button, Flex, Spacer, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  Spacer,
+  Text,
+  Alert,
+  AlertIcon,
+} from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import React, { useEffect } from 'react';
-import { BiErrorAlt } from 'react-icons/bi';
 import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import * as yup from 'yup';
@@ -74,21 +81,10 @@ const Login: React.FC = () => {
                 </Box>
               </Link>
               {error ? (
-                <Box
-                  mt="2"
-                  w="full"
-                  p="2"
-                  px="4"
-                  bg="red.100"
-                  fontSize="sm"
-                  fontWeight="semibold"
-                  color="red.500"
-                  d="flex"
-                  alignItems="center"
-                >
-                  <BiErrorAlt />
-                  <Text ml="2">{error}</Text>
-                </Box>
+                <Alert mt="2" status="error">
+                  <AlertIcon />
+                  {error}
+                </Alert>
               ) : null}
             </Box>
           </Form>

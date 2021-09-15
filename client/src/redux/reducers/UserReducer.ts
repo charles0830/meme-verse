@@ -1,4 +1,5 @@
 import { Reducer } from 'redux';
+import { UserType } from '../../types';
 import {
   GET_PROFILE_FAILED,
   GET_PROFILE_REQUEST,
@@ -84,7 +85,6 @@ export const registerReducer: Reducer = (
 };
 
 // get profile reducer
-type UserType = { username: string; email: string };
 interface GetProfileInitialState {
   loading: boolean;
   user: UserType;
@@ -98,7 +98,7 @@ type GETPROFILE_ACTIONTYPE =
 export const getProfileReducer: Reducer = (
   state: GetProfileInitialState = {
     loading: false,
-    user: { username: '', email: '' },
+    user: { _id: '', username: '', email: '' },
     error: null,
   },
   action: GETPROFILE_ACTIONTYPE

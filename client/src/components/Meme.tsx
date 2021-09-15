@@ -2,10 +2,15 @@ import React from 'react';
 import { Box, Text, Spacer, Flex, Button } from '@chakra-ui/react';
 import { BiComment, BiLike } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
+import { MemeType } from '../types';
 
-const Post: React.FC = () => {
+interface MemeProps {
+  meme: MemeType;
+}
+
+const Meme: React.FC<MemeProps> = ({ meme }) => {
   return (
-    <Link to={`/t/meme/${'sdsd'}`}>
+    <Link to={`/t/meme/${meme._id}`}>
       <Box
         w="100%"
         h="100%"
@@ -22,7 +27,7 @@ const Post: React.FC = () => {
               maxHeight: '100%',
               objectFit: 'contain',
             }}
-            src="https://picsum.photos/800"
+            src={meme.image}
           />
         </Box>
         <Box
@@ -55,7 +60,7 @@ const Post: React.FC = () => {
                 mr="4"
               >
                 <BiLike />
-                <Text ml="1">6</Text>
+                <Text ml="1">{meme.like}</Text>
               </Button>
               <Box d="flex" alignItems="center">
                 <BiComment />
@@ -64,7 +69,7 @@ const Post: React.FC = () => {
             </Flex>
             <Spacer />
             <Text fontWeight="thin" fontStyle="italic">
-              @shihab
+              {meme.user.username}
             </Text>
           </Box>
         </Box>
@@ -73,4 +78,4 @@ const Post: React.FC = () => {
   );
 };
 
-export default Post;
+export default Meme;

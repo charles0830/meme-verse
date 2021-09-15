@@ -1,8 +1,29 @@
-import { Box, Grid, Input, Flex, Button } from '@chakra-ui/react';
+import {
+  Box,
+  Grid,
+  Input,
+  Flex,
+  Button,
+  Alert,
+  AlertIcon,
+} from '@chakra-ui/react';
+import { useEffect } from 'react';
 import { AiOutlineUpload } from 'react-icons/ai';
-import Post from '../components/Post';
+import { useDispatch } from 'react-redux';
+import Loader from '../components/Loader';
+import Meme from '../components/Meme';
+import { getMemes } from '../redux/actions/MemeAction';
+import { MemeType } from '../types';
+import { useAppSelector } from '../utils/reduxHook';
 
 const Feed = () => {
+  const dispatch = useDispatch();
+  const { loading, memes, error } = useAppSelector((state) => state.memesGet);
+
+  useEffect(() => {
+    dispatch(getMemes());
+  }, [dispatch]);
+
   return (
     <Box w="full" h="auto">
       <Box w="full" bg="gray.100" p="2" mb="2">
@@ -23,17 +44,22 @@ const Feed = () => {
           </Button>
         </Flex>
       </Box>
-      <Grid templateColumns="repeat(3, 1fr)" gap={2}>
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-      </Grid>
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Alert status="error">
+          <AlertIcon />
+          {error}
+        </Alert>
+      ) : memes?.length > 0 ? (
+        <Grid templateColumns="repeat(3, 1fr)" gap={2}>
+          {memes.map((meme: MemeType) => (
+            <Meme key={meme._id} meme={meme} />
+          ))}
+        </Grid>
+      ) : (
+        'No'
+      )}
     </Box>
   );
 };

@@ -1,7 +1,6 @@
-import { Box, Flex, Text, Button, Spacer } from '@chakra-ui/react';
+import { Box, Flex, Alert, AlertIcon, Button, Spacer } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { useEffect } from 'react';
-import { BiErrorAlt } from 'react-icons/bi';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import * as yup from 'yup';
@@ -26,7 +25,7 @@ const Register = () => {
       .string()
       .required('Username required!')
       .min(3, 'atleast 3 character')
-      .max(5, 'maximum 5 character'),
+      .max(6, 'maximum 5 character'),
     password: yup
       .string()
       .required('Password requied!')
@@ -72,21 +71,10 @@ const Register = () => {
                 <Spacer />
               </Flex>
               {error ? (
-                <Box
-                  mt="2"
-                  w="full"
-                  p="2"
-                  px="4"
-                  bg="red.100"
-                  fontSize="sm"
-                  fontWeight="semibold"
-                  color="red.500"
-                  d="flex"
-                  alignItems="center"
-                >
-                  <BiErrorAlt />
-                  <Text ml="2">{error}</Text>
-                </Box>
+                <Alert mt="2" status="error">
+                  <AlertIcon />
+                  {error}
+                </Alert>
               ) : null}
             </Box>
           </Form>
