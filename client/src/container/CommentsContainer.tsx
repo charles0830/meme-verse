@@ -23,7 +23,7 @@ const CommentsContainer: React.FC<CommentsContainerProps> = ({ memeId }) => {
   const [newComment, setNewComment] = useState('');
 
   const dispatch = useDispatch();
-  const { loading, comments, error, commentSuccess } = useAppSelector(
+  const { loading, comments, error } = useAppSelector(
     (state) => state.commentsGet
   );
 
@@ -34,7 +34,7 @@ const CommentsContainer: React.FC<CommentsContainerProps> = ({ memeId }) => {
   const submitCommentHandler = () => {
     if (newComment !== '') {
       dispatch(commentOnMeme(memeId, newComment));
-      if (commentSuccess) setNewComment('');
+      setNewComment('');
     }
   };
 
