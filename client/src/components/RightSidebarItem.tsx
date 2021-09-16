@@ -28,7 +28,9 @@ const RightSidebarItem: React.FC<RightSidebarItemProps> = ({
         my="2"
       >
         {icon}
-        <Text ml="2">{text}</Text>
+        <Text display={{ base: 'none', sm: 'block' }} ml="2">
+          {text}
+        </Text>
       </Box>
     </Link>
   );

@@ -1,13 +1,17 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
-import { CgProfile, IoNotificationsOutline, RiMoreFill } from 'react-icons/all';
+import {
+  CgProfile,
+  IoNotificationsOutline,
+  RiMoreFill,
+  AiOutlineSetting,
+} from 'react-icons/all';
 import { CgFeed } from 'react-icons/cg';
-import { GrSettingsOption } from 'react-icons/gr';
 import RightSidebarItem from './RightSidebarItem';
 
 const RightSidebar: React.FC = () => {
   return (
-    <Box p="2" h="100%" w="200px">
+    <Box d={{ base: 'flex', md: 'block' }} p="2" h="100%" w="200px">
       <RightSidebarItem
         text="Profile"
         icon={<CgProfile />}
@@ -21,7 +25,7 @@ const RightSidebar: React.FC = () => {
       />
       <RightSidebarItem
         text="Settings"
-        icon={<GrSettingsOption />}
+        icon={<AiOutlineSetting />}
         routePath="settings"
       />
       <RightSidebarItem text="More" icon={<RiMoreFill />} routePath="more" />

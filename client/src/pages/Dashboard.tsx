@@ -1,4 +1,4 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 import MemeDetails from './MemeDetails';
 import RightSidebar from '../components/RightSidebar';
@@ -9,8 +9,9 @@ const Dashboard = () => {
   const { path } = useRouteMatch();
 
   return (
-    <Flex w="full" maxH="100vh">
-      <Box flex={1}>
+    <Box w="full" d={{ sm: 'flex' }} maxH="100vh">
+      <RightSidebar />
+      <Box flex={{ sm: 1 }}>
         <Switch>
           <Route path={`${path}/newsfeed`} component={Feed} />
           <Route path={`${path}/meme/:memeId`} component={MemeDetails} />
@@ -18,8 +19,7 @@ const Dashboard = () => {
           <Redirect to={`${path}/newsfeed`} />
         </Switch>
       </Box>
-      <RightSidebar />
-    </Flex>
+    </Box>
   );
 };
 
