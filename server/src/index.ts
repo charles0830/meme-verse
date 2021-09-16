@@ -23,7 +23,7 @@ const main = async () => {
   // cors
   app.use(
     cors({
-      origin: ['http://localhost:3000'],
+      origin: ['http://localhost:3000', 'https://meme-verse-web.netlify.app'],
     })
   );
 
