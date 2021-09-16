@@ -5,6 +5,9 @@ import {
   GET_PROFILE_FAILED,
   GET_PROFILE_REQUEST,
   GET_PROFILE_SUCCESS,
+  GET_USER_MEMES_FAILED,
+  GET_USER_MEMES_REQUEST,
+  GET_USER_MEMES_SUCCESS,
   LOGIN_FAILED,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -134,3 +137,39 @@ export const getProfile =
       });
     }
   };
+// get user memes
+export const getUserMemes = () => async (dispatch: Dispatch, getState: any) => {
+  try {
+    dispatch({
+      type: GET_USER_MEMES_REQUEST,
+    });
+
+    const {
+      auth: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${baseURL}/api/user/getUserMemes`,
+      config
+    );
+
+    dispatch({
+      type: GET_USER_MEMES_SUCCESS,
+      payload: data,
+    });
+  } catch (error: any) {
+    dispatch({
+      type: GET_USER_MEMES_FAILED,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

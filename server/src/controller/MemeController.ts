@@ -67,6 +67,10 @@ export const deleteMeme = asyncHandler(async (req: Request, res: Response) => {
   if (meme) {
     if (meme.user.toString() === req.user._id.toString()) {
       await meme.remove();
+      // delete memes like
+      await LikeModel.deleteMany({ memeId: meme._id });
+      // delete meme comments
+      await CommentModel.deleteMany({ memeId: meme._id });
       res.status(200).json(meme);
     } else {
       res.status(403);

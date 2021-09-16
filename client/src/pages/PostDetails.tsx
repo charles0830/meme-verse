@@ -7,27 +7,35 @@ import {
   Image,
   Spacer,
   Text,
+  IconButton,
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { BiLike } from 'react-icons/bi';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import Loader from '../components/Loader';
 import CommentsContainer from '../container/CommentsContainer';
-import { getMeme, likeMeme } from '../redux/actions/MemeAction';
+import { deleteMeme, getMeme, likeMeme } from '../redux/actions/MemeAction';
 import { useAppSelector } from '../utils/reduxHook';
 
 const PostDetails: React.FC = () => {
   const { memeId } = useParams<{ memeId: string }>();
+
+  const history = useHistory();
+
   const dispatch = useDispatch();
-  const { loading, meme, error, likeError } = useAppSelector(
-    (state) => state.memeGet
-  );
-  console.log(meme);
+  const { loading, meme, error, likeError, deleteLoading, deleteSuccess } =
+    useAppSelector((state) => state.memeGet);
+  const { userInfo } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(getMeme(memeId));
-  }, [dispatch, memeId]);
+
+    if (deleteSuccess) {
+      history.push('/t/profile');
+    }
+  }, [history, dispatch, memeId, deleteSuccess]);
 
   const likeHandler = () => {
     dispatch(likeMeme(memeId));
@@ -62,6 +70,17 @@ const PostDetails: React.FC = () => {
             </Button>
             <Spacer />
             <Text fontSize="sm">posted by @{meme?.user?.username}</Text>
+            <Spacer />
+            {userInfo?._id === meme?.user?._id ? (
+              <IconButton
+                isLoading={deleteLoading}
+                aria-label="delete meme"
+                icon={<RiDeleteBin6Line />}
+                size="sm"
+                colorScheme="red"
+                onClick={() => dispatch(deleteMeme(memeId))}
+              />
+            ) : null}
           </Flex>
         </>
       ) : null}

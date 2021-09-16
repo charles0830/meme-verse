@@ -16,6 +16,10 @@ import {
   GET_SINGLE_MEME_SUCCESS,
   MEME_LIKED_SUCCESS,
   MEME_LIKED_FAILED,
+  DELETE_MEME_REQUEST,
+  DELETE_MEME_SUCCESS,
+  DELETE_MEME_FAILED,
+  DELETE_MEME_RESET,
 } from '../actionTypes';
 
 // get all memes
@@ -78,6 +82,44 @@ export const createMeme =
     } catch (error: any) {
       dispatch({
         type: CREATE_MEME_FAILED,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+// create a meme
+export const deleteMeme =
+  (memeId: string) => async (dispatch: Dispatch, getState: any) => {
+    try {
+      dispatch({
+        type: DELETE_MEME_REQUEST,
+      });
+      const {
+        auth: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      await axios.delete(`${baseURL}/api/meme/${memeId}`, config);
+
+      dispatch({
+        type: DELETE_MEME_SUCCESS,
+      });
+
+      setTimeout(() => {
+        dispatch({
+          type: DELETE_MEME_RESET,
+        });
+      }, 1000);
+    } catch (error: any) {
+      dispatch({
+        type: DELETE_MEME_FAILED,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

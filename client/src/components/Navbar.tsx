@@ -23,7 +23,7 @@ const Navbar = () => {
         <Link to="/">
           <Heading size="lg" fontWeight="extrabold">
             Meme
-            <Text d="inline-block" color="messenger.400">
+            <Text d="inline-block" color="messenger.500">
               Verse
             </Text>
           </Heading>
