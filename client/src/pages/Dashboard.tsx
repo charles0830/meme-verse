@@ -1,6 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
-import PostDetails from './PostDetails';
+import MemeDetails from './MemeDetails';
 import RightSidebar from '../components/RightSidebar';
 import Feed from './Feed';
 import Profile from './Profile';
@@ -13,7 +13,7 @@ const Dashboard = () => {
       <Box flex={1}>
         <Switch>
           <Route path={`${path}/newsfeed`} component={Feed} />
-          <Route path={`${path}/meme/:memeId`} component={PostDetails} />
+          <Route path={`${path}/meme/:memeId`} component={MemeDetails} />
           <Route path={`${path}/profile`} component={Profile} />
           <Redirect to={`${path}/newsfeed`} />
         </Switch>

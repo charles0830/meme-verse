@@ -1,0 +1,9 @@
+.uploadBtnLabel {
+  background-color: #009688;
+  color: white;
+  padding: 5px 20px;
+  font-family: sans-serif;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 14px;
+}

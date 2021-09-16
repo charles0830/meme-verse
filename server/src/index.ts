@@ -1,10 +1,12 @@
-import express from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
+import express from 'express';
+import path from 'path';
 import connectDB from './config/db';
 import { errorHandler, notFound } from './middleware/errorMiddleware';
-import userRoutes from './routes/userRoutes';
 import memeRoutes from './routes/memeRoutes';
-import cors from 'cors';
+import uploadRoutes from './routes/uploadRoutes';
+import userRoutes from './routes/userRoutes';
 
 // load environment variables
 dotenv.config();
@@ -31,6 +33,8 @@ const main = async () => {
   });
   app.use('/api/user', userRoutes);
   app.use('/api/meme', memeRoutes);
+  app.use('/api/upload', uploadRoutes);
+  app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
   // error middleware
   app.use(notFound);

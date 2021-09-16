@@ -19,9 +19,8 @@ import CommentsContainer from '../container/CommentsContainer';
 import { deleteMeme, getMeme, likeMeme } from '../redux/actions/MemeAction';
 import { useAppSelector } from '../utils/reduxHook';
 
-const PostDetails: React.FC = () => {
+const MemeDetails: React.FC = () => {
   const { memeId } = useParams<{ memeId: string }>();
-
   const history = useHistory();
 
   const dispatch = useDispatch();
@@ -89,4 +88,4 @@ const PostDetails: React.FC = () => {
   );
 };
 
-export default PostDetails;
+export default MemeDetails;

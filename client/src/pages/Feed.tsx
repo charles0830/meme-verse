@@ -1,21 +1,25 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import {
-  Box,
-  Grid,
-  Input,
-  Flex,
-  Button,
   Alert,
   AlertIcon,
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Input,
 } from '@chakra-ui/react';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { AiOutlineUpload } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
+import { baseURL } from '../baseURL';
 import Loader from '../components/Loader';
 import Meme from '../components/Meme';
 import { createMeme, getMemes } from '../redux/actions/MemeAction';
 import { useAppSelector } from '../utils/reduxHook';
 
 const Feed = () => {
+  const [uploading, setUploading] = useState(false);
+
   const [newMemeLink, setNewMeme] = useState('');
   const dispatch = useDispatch();
   const { loading, memes, error, createMemeError } = useAppSelector(
@@ -36,6 +40,31 @@ const Feed = () => {
   const keyPressHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       submitMemeHandler();
+    }
+  };
+
+  const uploadMemeFileHandler = async (e: any) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
+    try {
+      setUploading(true);
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+      const { data } = await axios.post(
+        `${baseURL}/api/upload`,
+        formData,
+        config
+      );
+      if (data) {
+        setUploading(false);
+        dispatch(createMeme(data));
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -62,15 +91,22 @@ const Feed = () => {
           >
             Post
           </Button>
-          <Button
-            leftIcon={<AiOutlineUpload />}
-            colorScheme="teal"
-            size="sm"
-            variant="solid"
-            onClick={submitMemeHandler}
-          >
-            Upload
-          </Button>
+
+          {uploading ? (
+            <Loader />
+          ) : (
+            <>
+              <input
+                onChange={uploadMemeFileHandler}
+                type="file"
+                id="actual-btn"
+                hidden
+              />
+              <label className="uploadBtnLabel" htmlFor="actual-btn">
+                Upload
+              </label>
+            </>
+          )}
         </Flex>
       </Box>
       {createMemeError ? <Alert>{error}</Alert> : null}

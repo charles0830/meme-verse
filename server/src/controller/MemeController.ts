@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
-import { Types } from 'mongoose';
+import fs from 'fs';
+import path from 'path';
 import CommentModel from '../models/CommentModel';
 import LikeModel from '../models/LikeModel';
 import MemeModel from '../models/MemeModel';
@@ -66,11 +67,26 @@ export const deleteMeme = asyncHandler(async (req: Request, res: Response) => {
   const meme = await MemeModel.findById(memeId);
   if (meme) {
     if (meme.user.toString() === req.user._id.toString()) {
-      await meme.remove();
       // delete memes like
       await LikeModel.deleteMany({ memeId: meme._id });
       // delete meme comments
       await CommentModel.deleteMany({ memeId: meme._id });
+      await meme.remove();
+
+      // delete image file from dir
+      // if (meme.image.includes('uploads')) {
+      //   fs.unlink(
+      //     path.join('./' + `/uploads/${meme.image.split('/')[1]}`),
+      //     (err) => {
+      //       if (err) {
+      //         console.log(err);
+      //       } else {
+      //         console.log('meme deleted!');
+      //       }
+      //     }
+      //   );
+      // }
+
       res.status(200).json(meme);
     } else {
       res.status(403);
