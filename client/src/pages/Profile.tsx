@@ -1,4 +1,12 @@
-import { Alert, AlertIcon, Box, Flex, Text, Grid } from '@chakra-ui/react';
+import {
+  Alert,
+  AlertIcon,
+  Box,
+  Flex,
+  Text,
+  Grid,
+  useColorMode,
+} from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Loader from '../components/Loader';
@@ -8,6 +16,7 @@ import { useAppSelector } from '../utils/reduxHook';
 
 const Profile: React.FC = () => {
   const dispatch = useDispatch();
+  const { colorMode } = useColorMode();
   const { loading, user } = useAppSelector((state) => state.profileGet);
   const { userInfo } = useAppSelector((state) => state.auth);
 
@@ -36,16 +45,15 @@ const Profile: React.FC = () => {
               style={{ borderRadius: 50 }}
             />
           </Box>
-          <Box ml="4">
+          <Box
+            ml="4"
+            textColor={colorMode === 'dark' ? 'gray.100' : 'gray.900'}
+          >
             <Text fontSize="2xl" fontWeight="bold">
               @{user?.username}
             </Text>
-            <Text color="gray.600" fontSize="sm">
-              {user?.email}
-            </Text>
-            <Text color="gray.600" fontSize="sm">
-              {memes ? memes?.length : 0} memes
-            </Text>
+            <Text fontSize="sm">{user?.email}</Text>
+            <Text fontSize="sm">{memes ? memes?.length : 0} memes</Text>
           </Box>
         </Flex>
       )}

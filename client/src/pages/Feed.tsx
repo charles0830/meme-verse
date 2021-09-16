@@ -7,6 +7,7 @@ import {
   Flex,
   Grid,
   Input,
+  useColorMode,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -19,6 +20,7 @@ import { useAppSelector } from '../utils/reduxHook';
 
 const Feed = () => {
   const [uploading, setUploading] = useState(false);
+  const { colorMode } = useColorMode();
 
   const [newMemeLink, setNewMeme] = useState('');
   const dispatch = useDispatch();
@@ -70,7 +72,12 @@ const Feed = () => {
 
   return (
     <Box w="full" h="auto">
-      <Box w="full" bg="gray.100" p="2" mb="2">
+      <Box
+        w="full"
+        bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
+        p="2"
+        mb="2"
+      >
         <Flex alignItems="center">
           <Box flex={1}>
             <Input

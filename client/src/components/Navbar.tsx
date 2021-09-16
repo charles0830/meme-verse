@@ -6,6 +6,7 @@ import {
   Button,
   IconButton,
   Text,
+  useColorMode,
 } from '@chakra-ui/react';
 import { AiFillGithub } from 'react-icons/ai';
 import { BiLogIn, BiLogOut } from 'react-icons/bi';
@@ -16,6 +17,8 @@ import { devSignout } from '../redux/actions/UserAction';
 import { useAppSelector } from '../utils/reduxHook';
 
 const Navbar = () => {
+  const { toggleColorMode } = useColorMode();
+
   const dispatch = useDispatch();
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   return (
@@ -59,6 +62,7 @@ const Navbar = () => {
           </Button>
         )}
         <IconButton
+          onClick={toggleColorMode}
           size="sm"
           aria-label="Change theme"
           icon={<IoSunnyOutline />}
