@@ -12,9 +12,17 @@ import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGOUT,
+  PASSWORD_RESET_LINK_FAILED,
+  PASSWORD_RESET_LINK_REQUEST,
+  PASSWORD_RESET_LINK_RESET,
+  PASSWORD_RESET_LINK_SUCCESS,
   REGISTER_FAILED,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
+  RESET_PASSEORD_FAILED,
+  RESET_PASSEORD_REQUEST,
+  RESET_PASSEORD_RESET,
+  RESET_PASSEORD_SUCCESS,
 } from '../actionTypes';
 
 interface loginCredentials {
@@ -173,3 +181,93 @@ export const getUserMemes = () => async (dispatch: Dispatch, getState: any) => {
     });
   }
 };
+// get password reset link
+export const getPasswordResetLink =
+  (email: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch({
+        type: PASSWORD_RESET_LINK_REQUEST,
+      });
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const { data } = await axios.post(
+        `${baseURL}/api/user/getPasswordResetLink`,
+        { email },
+        config
+      );
+
+      dispatch({
+        type: PASSWORD_RESET_LINK_SUCCESS,
+        payload: data,
+      });
+
+      setTimeout(() => {
+        dispatch({
+          type: PASSWORD_RESET_LINK_RESET,
+        });
+      }, 3000);
+    } catch (error: any) {
+      dispatch({
+        type: PASSWORD_RESET_LINK_FAILED,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+      setTimeout(() => {
+        dispatch({
+          type: PASSWORD_RESET_LINK_RESET,
+        });
+      }, 2000);
+    }
+  };
+// reset password from link
+export const resetPassword =
+  (token: string, values: { newPass: string; conPass: string }) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch({
+        type: RESET_PASSEORD_REQUEST,
+      });
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      await axios.post(
+        `${baseURL}/api/user/resetPasswordFromLink/${token}`,
+        values,
+        config
+      );
+
+      dispatch({
+        type: RESET_PASSEORD_SUCCESS,
+      });
+
+      setTimeout(() => {
+        dispatch({
+          type: RESET_PASSEORD_RESET,
+        });
+      }, 2000);
+    } catch (error: any) {
+      dispatch({
+        type: RESET_PASSEORD_FAILED,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+      setTimeout(() => {
+        dispatch({
+          type: RESET_PASSEORD_RESET,
+        });
+      }, 2000);
+    }
+  };

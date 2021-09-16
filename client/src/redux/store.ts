@@ -3,10 +3,12 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import {
+  getPasswordResetLinkReducer,
   getProfileReducer,
   getUserMemesReducer,
   loginReducer,
   registerReducer,
+  resetPasswordReducer,
 } from './reducers/UserReducer';
 import {
   getCommentsReducer,
@@ -22,6 +24,8 @@ const reducer = combineReducers({
   memeGet: getMemeReducer,
   commentsGet: getCommentsReducer,
   userMemesGet: getUserMemesReducer,
+  resetLinkGet: getPasswordResetLinkReducer,
+  passwordReset: resetPasswordReducer,
 });
 
 const verifyToken = (token: string, lsItem: string): boolean => {

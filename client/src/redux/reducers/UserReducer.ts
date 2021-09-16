@@ -11,9 +11,17 @@ import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGOUT,
+  PASSWORD_RESET_LINK_FAILED,
+  PASSWORD_RESET_LINK_REQUEST,
+  PASSWORD_RESET_LINK_RESET,
+  PASSWORD_RESET_LINK_SUCCESS,
   REGISTER_FAILED,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
+  RESET_PASSEORD_FAILED,
+  RESET_PASSEORD_REQUEST,
+  RESET_PASSEORD_RESET,
+  RESET_PASSEORD_SUCCESS,
 } from '../actionTypes';
 
 // login reducer
@@ -144,6 +152,74 @@ export const getUserMemesReducer: Reducer = (
       return { loading: false, memes: action.payload };
     case GET_USER_MEMES_FAILED:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+// get password reset link reducer
+interface GetResetLinkInitialState {
+  loading: boolean;
+  success: boolean;
+  message: any;
+  error: any;
+}
+type GETRESETLINK_ACTIONTYPE =
+  | { type: typeof PASSWORD_RESET_LINK_REQUEST }
+  | { type: typeof PASSWORD_RESET_LINK_SUCCESS; payload: any }
+  | { type: typeof PASSWORD_RESET_LINK_FAILED; payload: any }
+  | { type: typeof PASSWORD_RESET_LINK_RESET };
+
+export const getPasswordResetLinkReducer: Reducer = (
+  state: GetResetLinkInitialState = {
+    loading: false,
+    success: false,
+    error: null,
+    message: {},
+  },
+  action: GETRESETLINK_ACTIONTYPE
+) => {
+  switch (action.type) {
+    case PASSWORD_RESET_LINK_REQUEST:
+      return { loading: true };
+    case PASSWORD_RESET_LINK_SUCCESS:
+      return { loading: false, success: true, message: action.payload };
+    case PASSWORD_RESET_LINK_FAILED:
+      return { loading: false, error: action.payload };
+    case PASSWORD_RESET_LINK_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+// reset password reducer
+interface ResetPasswordInitialState {
+  loading: boolean;
+  success: boolean;
+  error: any;
+}
+type RESET_PASSWORD_ACTIONTYPE =
+  | { type: typeof RESET_PASSEORD_REQUEST }
+  | { type: typeof RESET_PASSEORD_SUCCESS; payload: any }
+  | { type: typeof RESET_PASSEORD_FAILED; payload: any }
+  | { type: typeof RESET_PASSEORD_RESET };
+
+export const resetPasswordReducer: Reducer = (
+  state: ResetPasswordInitialState = {
+    loading: false,
+    success: false,
+    error: null,
+  },
+  action: RESET_PASSWORD_ACTIONTYPE
+) => {
+  switch (action.type) {
+    case RESET_PASSEORD_REQUEST:
+      return { loading: true };
+    case RESET_PASSEORD_SUCCESS:
+      return { loading: false, success: true };
+    case RESET_PASSEORD_FAILED:
+      return { loading: false, error: action.payload };
+    case RESET_PASSEORD_RESET:
+      return {};
     default:
       return state;
   }

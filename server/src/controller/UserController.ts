@@ -5,6 +5,8 @@ import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/generateToken';
 import MemeModel from '../models/MemeModel';
 import CommentModel from '../models/CommentModel';
+import nodemailer from 'nodemailer';
+import jwt from 'jsonwebtoken';
 
 // desc: register user
 // method: POST
@@ -132,6 +134,81 @@ export const getUserMemes = asyncHandler(
     } else {
       res.status(500);
       throw new Error('Failed to fetch user memes!');
+    }
+  }
+);
+// desc: Get reset password link
+// method: PUT
+export const getResetPasswordLink = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { email } = req.body;
+    const user = await UserModel.findOne({ email });
+    if (user) {
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.PASS,
+        },
+      });
+
+      const token = jwt.sign(
+        { id: user._id },
+        process.env.EMAIL_SECRET as string,
+        {
+          expiresIn: '30min',
+        }
+      );
+
+      // const url = `http://localhost:3000/createNewPassword/${token}`;    //localhost
+      const url = `${process.env.PROD_CLIENT}/reset-password/${token}`;
+
+      const emailSent = await transporter.sendMail({
+        from: process.env.EMAIL,
+        to: email,
+        subject: 'Reset Password | MemeVerse',
+        text: 'Reset your password',
+        html: `<p>Please click this link to reset password. <a href="${url}">${url}</a></p>`,
+      });
+      if (emailSent) {
+        res.status(201).json({
+          status: 'Email sent.',
+          message: `Password reset link was sent to ${email}.`,
+        });
+      } else {
+        res.status(403);
+        throw new Error('Password reset failed, Email sending failed!');
+      }
+    } else {
+      res.status(403);
+      throw new Error('There is no account associated with this email!');
+    }
+  }
+);
+// reset password from link
+export const resetPasswordFromLink = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { id } = jwt.verify(
+      req.params.token,
+      process.env.EMAIL_SECRET as string
+    ) as { id: string };
+    const user = await UserModel.findById(id);
+    if (user) {
+      let { newPass, conPass } = req.body;
+      if (newPass === conPass) {
+        user.password = await bcrypt.hash(newPass, 10);
+        await user.save();
+        res.status(200);
+        res.json({ message: 'Password reset successfully!' });
+      } else {
+        res.status(403);
+        throw new Error('Password does not match!');
+      }
+    } else {
+      res.status(404);
+      throw new Error('User not found!');
     }
   }
 );

@@ -7,6 +7,7 @@ import {
   IconButton,
   Text,
 } from '@chakra-ui/react';
+import { AiFillGithub } from 'react-icons/ai';
 import { BiLogIn, BiLogOut } from 'react-icons/bi';
 import { IoSunnyOutline } from 'react-icons/io5';
 import { useDispatch } from 'react-redux';
@@ -62,6 +63,18 @@ const Navbar = () => {
           aria-label="Change theme"
           icon={<IoSunnyOutline />}
         />
+        <a
+          href="https://github.com/saifulshihab/meme-verse"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <IconButton
+            ml="2"
+            size="sm"
+            aria-label="repo link"
+            icon={<AiFillGithub />}
+          />
+        </a>
       </Flex>
     </Flex>
   );
