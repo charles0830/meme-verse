@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { Types } from 'mongoose';
 import CommentModel from '../models/CommentModel';
+import LikeModel from '../models/LikeModel';
 import MemeModel from '../models/MemeModel';
 
 // desc: create meme
@@ -10,7 +11,7 @@ export const createMeme = asyncHandler(async (req: Request, res: Response) => {
   const { image } = req.body;
   const newMeme = await MemeModel.create({ image, user: req.user._id });
   if (newMeme) {
-    res.status(201).json(newMeme);
+    res.status(201).json({ meme: newMeme, totoalComments: 0 });
   } else {
     res.status(500);
     throw new Error('Failed to create meme!');
@@ -82,7 +83,21 @@ export const getMeme = asyncHandler(async (req: Request, res: Response) => {
   const memeId = req.params.memeId;
   const meme = await MemeModel.findById(memeId).populate('user');
   if (meme) {
-    res.status(200).json(meme);
+    // get like status
+    let likeStatus: number = 0;
+    const like = await LikeModel.findOne({ memeId, userId: req.user._id });
+    if (like) {
+      likeStatus = 1;
+    }
+
+    const m = {
+      _id: meme._id,
+      image: meme.image,
+      like: meme.like,
+      user: meme.user,
+      likeStatus,
+    };
+    res.status(200).json(m);
   } else {
     res.status(404);
     throw new Error('Item not found!');
@@ -127,6 +142,48 @@ export const getComments = asyncHandler(async (req: Request, res: Response) => {
     } else {
       res.status(500);
       throw new Error('Comment failed!');
+    }
+  } else {
+    res.status(404);
+    throw new Error('Item not found!');
+  }
+});
+// desc: like meme
+// method: PUT
+export const likeMeme = asyncHandler(async (req: Request, res: Response) => {
+  const memeId = req.params.memeId;
+  const meme = await MemeModel.findById(memeId).populate('user');
+  if (meme) {
+    const like = await LikeModel.findOne({ memeId, userId: req.user._id });
+    if (like) {
+      await like.remove();
+      meme.like = meme.like - 1;
+      await meme.save();
+      // get like status
+      const m = {
+        _id: meme._id,
+        image: meme.image,
+        like: meme.like,
+        user: meme.user,
+        likeStatus: 0,
+      };
+      res.status(200).json(m);
+    } else {
+      await LikeModel.create({
+        memeId,
+        status: 1,
+        userId: req.user._id,
+      });
+      meme.like = meme.like + 1;
+      await meme.save();
+      const m = {
+        _id: meme._id,
+        image: meme.image,
+        like: meme.like,
+        user: meme.user,
+        likeStatus: 1,
+      };
+      res.status(200).json(m);
     }
   } else {
     res.status(404);

@@ -4,6 +4,8 @@ import { baseURL } from '../../baseURL';
 import {
   COMMENT_FAILED,
   COMMENT_SUCCESS,
+  CREATE_MEME_FAILED,
+  CREATE_MEME_SUCCESS,
   GET_COMMENTS_FAILED,
   GET_COMMENTS_REQUEST,
   GET_COMMENTS_SUCCESS,
@@ -12,10 +14,11 @@ import {
   GET_MEMES_SUCCESS,
   GET_SINGLE_MEME_REQUEST,
   GET_SINGLE_MEME_SUCCESS,
+  MEME_LIKED_SUCCESS,
+  MEME_LIKED_FAILED,
 } from '../actionTypes';
 
 // get all memes
-// eslint-disable-next-line import/prefer-default-export
 export const getMemes = () => async (dispatch: Dispatch, getState: any) => {
   try {
     dispatch({
@@ -48,8 +51,41 @@ export const getMemes = () => async (dispatch: Dispatch, getState: any) => {
     });
   }
 };
+// create a meme
+export const createMeme =
+  (image: string) => async (dispatch: Dispatch, getState: any) => {
+    try {
+      const {
+        auth: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.post(
+        `${baseURL}/api/meme`,
+        { image },
+        config
+      );
+
+      dispatch({
+        type: CREATE_MEME_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: CREATE_MEME_FAILED,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 // get single meme
-// eslint-disable-next-line import/prefer-default-export
 export const getMeme =
   (memeId: string) => async (dispatch: Dispatch, getState: any) => {
     try {
@@ -122,7 +158,6 @@ export const getComments =
     }
   };
 // get single meme comments
-// eslint-disable-next-line import/prefer-default-export
 export const commentOnMeme =
   (memeId: string, comment: string) =>
   async (dispatch: Dispatch, getState: any) => {
@@ -150,6 +185,37 @@ export const commentOnMeme =
     } catch (error: any) {
       dispatch({
         type: COMMENT_FAILED,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+// get single meme comments
+export const likeMeme =
+  (memeId: string) => async (dispatch: Dispatch, getState: any) => {
+    try {
+      const {
+        auth: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `${baseURL}/api/meme/${memeId}/like`,
+        {},
+        config
+      );
+      dispatch({
+        type: MEME_LIKED_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: MEME_LIKED_FAILED,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

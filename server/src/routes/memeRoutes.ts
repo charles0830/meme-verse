@@ -6,6 +6,7 @@ import {
   getComments,
   getMeme,
   getMemes,
+  likeMeme,
 } from '../controller/MemeController';
 import { protect } from '../middleware/authMiddleware';
 
@@ -20,5 +21,7 @@ router
   .get(protect, getComments);
 // delete meme
 router.route('/:memeId').delete(protect, deleteMeme).get(protect, getMeme);
+// like a meme
+router.route('/:memeId/like').put(protect, likeMeme);
 
 export default router;

@@ -75,12 +75,7 @@ const CommentsContainer: React.FC<CommentsContainerProps> = ({ memeId }) => {
             <Comment key={comment._id} comment={comment} />
           ))}
         </Box>
-      ) : (
-        <Alert status="info">
-          <AlertIcon />
-          <Text fontSize="sm">No comments</Text>
-        </Alert>
-      )}
+      ) : null}
     </Box>
   );
 };

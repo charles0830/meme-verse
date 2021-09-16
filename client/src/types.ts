@@ -5,7 +5,7 @@ export type MemeType = {
   image: string;
   like: number;
   user: UserType;
-  createdAt: string;
+  likeStatus: number;
 };
 
 export type CommentType = {

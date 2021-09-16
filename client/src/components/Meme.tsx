@@ -11,7 +11,7 @@ interface MemeProps {
 
 const Meme: React.FC<MemeProps> = ({ meme, totalComments }) => {
   return (
-    <Link to={`/t/meme/${meme._id}`}>
+    <Link to={`/t/meme/${meme?._id}`}>
       <Box
         w="100%"
         h="100%"
@@ -21,7 +21,7 @@ const Meme: React.FC<MemeProps> = ({ meme, totalComments }) => {
         shadow="sm"
       >
         <Box w="100%" h="100%" position="relative" zIndex="100">
-          <Image alt="meme image" w="full" h="full" src={meme.image} />
+          <Image alt="meme image" w="full" h="full" src={meme?.image} />
         </Box>
         <Box
           position="absolute"
@@ -53,7 +53,7 @@ const Meme: React.FC<MemeProps> = ({ meme, totalComments }) => {
                 mr="4"
               >
                 <BiLike />
-                <Text ml="1">{meme.like}</Text>
+                <Text ml="1">{meme?.like}</Text>
               </Button>
               <Box d="flex" alignItems="center">
                 <BiComment />
@@ -62,7 +62,7 @@ const Meme: React.FC<MemeProps> = ({ meme, totalComments }) => {
             </Flex>
             <Spacer />
             <Text fontWeight="thin" fontStyle="italic">
-              @{meme.user.username}
+              @{meme?.user?.username}
             </Text>
           </Box>
         </Box>
