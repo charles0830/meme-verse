@@ -4,6 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import {
   getProfileReducer,
+  getUserMemesReducer,
   loginReducer,
   registerReducer,
 } from './reducers/UserReducer';
@@ -20,6 +21,7 @@ const reducer = combineReducers({
   memesGet: getMemesReducer,
   memeGet: getMemeReducer,
   commentsGet: getCommentsReducer,
+  userMemesGet: getUserMemesReducer,
 });
 
 const verifyToken = (token: string, lsItem: string): boolean => {

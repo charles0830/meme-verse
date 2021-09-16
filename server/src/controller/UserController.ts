@@ -3,6 +3,8 @@ import asyncHandler from 'express-async-handler';
 import UserModel from '../models/UserModel';
 import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/generateToken';
+import MemeModel from '../models/MemeModel';
+import CommentModel from '../models/CommentModel';
 
 // desc: register user
 // method: POST
@@ -85,6 +87,51 @@ export const getProfile = asyncHandler(async (req: Request, res: Response) => {
     }
   } else {
     res.status(404);
-    throw new Error('USer not found!');
+    throw new Error('User not found!');
   }
 });
+// desc: get user memes
+// method: GET
+export const getUserMemes = asyncHandler(
+  async (req: Request, res: Response) => {
+    const userId = req.user._id;
+    const memes = await MemeModel.find({ user: userId })
+      .populate('user')
+      .sort({ createdAt: -1 });
+    if (memes) {
+      const comments = await Promise.all(
+        memes?.map(async (meme: any) => {
+          try {
+            const cmnst = await CommentModel.countDocuments({
+              memeId: meme?._id,
+            });
+            if (cmnst) {
+              return cmnst;
+            } else {
+              return 0;
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        })
+      );
+      interface MType {
+        meme: any;
+        totalComments: any;
+      }
+      const memesWithCount: MType[] = [];
+
+      memes.forEach(async (meme, idx) => {
+        memesWithCount.push({
+          meme: meme,
+          totalComments: comments[idx],
+        });
+      });
+
+      res.status(200).json(memesWithCount);
+    } else {
+      res.status(500);
+      throw new Error('Failed to fetch user memes!');
+    }
+  }
+);

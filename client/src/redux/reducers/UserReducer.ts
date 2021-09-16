@@ -1,9 +1,12 @@
 import { Reducer } from 'redux';
-import { UserType } from '../../types';
+import { MemeType, UserType } from '../../types';
 import {
   GET_PROFILE_FAILED,
   GET_PROFILE_REQUEST,
   GET_PROFILE_SUCCESS,
+  GET_USER_MEMES_FAILED,
+  GET_USER_MEMES_REQUEST,
+  GET_USER_MEMES_SUCCESS,
   LOGIN_FAILED,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -109,6 +112,37 @@ export const getProfileReducer: Reducer = (
     case GET_PROFILE_SUCCESS:
       return { loading: false, user: action.payload };
     case GET_PROFILE_FAILED:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+// get profile reducer
+interface GetUserMemesInitialState {
+  loading: boolean;
+  memes: MemeType[];
+  error: any;
+}
+type GETUSERMEMES_ACTIONTYPE =
+  | { type: typeof GET_USER_MEMES_REQUEST }
+  | { type: typeof GET_USER_MEMES_SUCCESS; payload: any }
+  | { type: typeof GET_USER_MEMES_FAILED; payload: any };
+
+export const getUserMemesReducer: Reducer = (
+  state: GetUserMemesInitialState = {
+    loading: false,
+    memes: [],
+    error: null,
+  },
+  action: GETUSERMEMES_ACTIONTYPE
+) => {
+  switch (action.type) {
+    case GET_USER_MEMES_REQUEST:
+      return { loading: true };
+    case GET_USER_MEMES_SUCCESS:
+      return { loading: false, memes: action.payload };
+    case GET_USER_MEMES_FAILED:
       return { loading: false, error: action.payload };
     default:
       return state;

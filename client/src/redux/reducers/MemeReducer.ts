@@ -5,6 +5,9 @@ import {
   COMMENT_SUCCESS,
   CREATE_MEME_FAILED,
   CREATE_MEME_SUCCESS,
+  DELETE_MEME_REQUEST,
+  DELETE_MEME_RESET,
+  DELETE_MEME_SUCCESS,
   GET_COMMENTS_FAILED,
   GET_COMMENTS_REQUEST,
   GET_COMMENTS_SUCCESS,
@@ -59,12 +62,17 @@ interface GetMemeInitialState {
   loading: boolean;
   meme: MemeType;
   error: any;
+  deleteLoading: boolean;
+  deleteSuccess: boolean;
 }
 type GETPMEME_ACTIONTYPE =
   | { type: typeof GET_SINGLE_MEME_REQUEST }
   | { type: typeof GET_SINGLE_MEME_SUCCESS; payload: any }
   | { type: typeof MEME_LIKED_SUCCESS; payload: any }
   | { type: typeof MEME_LIKED_FAILED; payload: any }
+  | { type: typeof DELETE_MEME_REQUEST }
+  | { type: typeof DELETE_MEME_SUCCESS }
+  | { type: typeof DELETE_MEME_RESET }
   | { type: typeof GET_SINGLE_MEME_FAILED; payload: any };
 
 export const getMemeReducer: Reducer = (
@@ -77,6 +85,8 @@ export const getMemeReducer: Reducer = (
       user: { _id: '', email: '', username: '' },
       likeStatus: 0,
     },
+    deleteLoading: false,
+    deleteSuccess: false,
     error: null,
   },
   action: GETPMEME_ACTIONTYPE
@@ -92,6 +102,12 @@ export const getMemeReducer: Reducer = (
       return { loading: false, likeError: action.payload };
     case GET_SINGLE_MEME_FAILED:
       return { loading: false, error: action.payload };
+    case DELETE_MEME_REQUEST:
+      return { loading: false, deleteLoading: true };
+    case DELETE_MEME_SUCCESS:
+      return { loading: false, deleteLoading: false, deleteSuccess: true };
+    case DELETE_MEME_RESET:
+      return {};
     default:
       return state;
   }

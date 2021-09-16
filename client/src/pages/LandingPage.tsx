@@ -1,11 +1,17 @@
-import { Box, Heading } from '@chakra-ui/react';
+import { Box, Heading, Button } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 
 const LandingPage = () => {
   return (
     <Box mt="5" p="2" w="60%">
-      <Heading fontWeight="black" size="4xl">
+      <Heading fontWeight="black" mb="3" size="4xl">
         A Simple Meme Sharing Web Application
       </Heading>
+      <Link to="/t">
+        <Button mt="10" size="lg" colorScheme="messenger">
+          Explore Now
+        </Button>
+      </Link>
     </Box>
   );
 };

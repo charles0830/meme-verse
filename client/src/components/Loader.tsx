@@ -3,7 +3,7 @@ import React from 'react';
 
 const Loader: React.FC = () => {
   return (
-    <Flex justifyContent="center" alignItems="center">
+    <Flex mt="1" justifyContent="center" alignItems="center">
       <Spinner size="md" />
     </Flex>
   );

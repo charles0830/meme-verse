@@ -1,17 +1,25 @@
+import { Alert, AlertIcon, Box, Flex, Text, Grid } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
-import { Box, Flex, Text } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
-import { useAppSelector } from '../utils/reduxHook';
-import { getProfile } from '../redux/actions/UserAction';
 import Loader from '../components/Loader';
+import Meme from '../components/Meme';
+import { getProfile, getUserMemes } from '../redux/actions/UserAction';
+import { useAppSelector } from '../utils/reduxHook';
 
 const Profile: React.FC = () => {
   const dispatch = useDispatch();
   const { loading, user } = useAppSelector((state) => state.profileGet);
   const { userInfo } = useAppSelector((state) => state.auth);
 
+  const {
+    loading: memesLoading,
+    error: memesError,
+    memes,
+  } = useAppSelector((state) => state.userMemesGet);
+
   useEffect(() => {
     dispatch(getProfile(userInfo?._id));
+    dispatch(getUserMemes());
   }, [dispatch, userInfo?._id]);
   return (
     <Box>
@@ -35,15 +43,38 @@ const Profile: React.FC = () => {
             <Text color="gray.600" fontSize="sm">
               {user?.email}
             </Text>
+            <Text color="gray.600" fontSize="sm">
+              {memes ? memes?.length : 0} memes
+            </Text>
           </Box>
         </Flex>
       )}
 
       <Box>
         <Text fontSize="xl" pb="1" fontWeight="black">
-          Posts
+          Memes
         </Text>
         <hr />
+        {memesLoading ? (
+          <Loader />
+        ) : memesError ? (
+          <Alert status="error">
+            <AlertIcon />
+            {memesError}
+          </Alert>
+        ) : memes?.length > 0 ? (
+          <Grid mt="3" templateColumns="repeat(3, 1fr)" gap={2}>
+            {memes.map((meme: any) => (
+              <Meme
+                key={meme?.meme?._id}
+                meme={meme?.meme}
+                totalComments={meme?.totalComments}
+              />
+            ))}
+          </Grid>
+        ) : (
+          'No memes!'
+        )}
       </Box>
     </Box>
   );

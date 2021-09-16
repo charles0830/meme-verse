@@ -92,7 +92,7 @@ const Feed = () => {
           ))}
         </Grid>
       ) : (
-        'No'
+        'No memes!'
       )}
     </Box>
   );
