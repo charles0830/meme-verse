@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
+import { Types } from 'mongoose';
 import CommentModel from '../models/CommentModel';
 import MemeModel from '../models/MemeModel';
 
@@ -58,7 +59,7 @@ export const getMemes = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 // desc: delete a meme
-// method: GET
+// method: DELETE
 export const deleteMeme = asyncHandler(async (req: Request, res: Response) => {
   const memeId = req.params.memeId;
   const meme = await MemeModel.findById(memeId);
@@ -70,6 +71,18 @@ export const deleteMeme = asyncHandler(async (req: Request, res: Response) => {
       res.status(403);
       throw new Error('You are not authorized to delte this!');
     }
+  } else {
+    res.status(404);
+    throw new Error('Item not found!');
+  }
+});
+// desc: get a meme
+// method: GET
+export const getMeme = asyncHandler(async (req: Request, res: Response) => {
+  const memeId = req.params.memeId;
+  const meme = await MemeModel.findById(memeId).populate('user');
+  if (meme) {
+    res.status(200).json(meme);
   } else {
     res.status(404);
     throw new Error('Item not found!');
@@ -102,3 +115,21 @@ export const commentOnMeme = asyncHandler(
     }
   }
 );
+// desc: get comments
+// method: GET
+export const getComments = asyncHandler(async (req: Request, res: Response) => {
+  const memeId = req.params.memeId;
+  const meme = await MemeModel.findById(memeId);
+  if (meme) {
+    const comments = await CommentModel.find({ memeId: memeId }).exec();
+    if (comments) {
+      res.status(200).json(comments);
+    } else {
+      res.status(500);
+      throw new Error('Comment failed!');
+    }
+  } else {
+    res.status(404);
+    throw new Error('Item not found!');
+  }
+});

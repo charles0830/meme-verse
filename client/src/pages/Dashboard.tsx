@@ -1,6 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
-import PostDetails from '../components/PostDetails';
+import PostDetails from './PostDetails';
 import RightSidebar from '../components/RightSidebar';
 import Feed from './Feed';
 import Profile from './Profile';

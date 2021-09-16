@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Text, Spacer, Flex, Button } from '@chakra-ui/react';
+import { Box, Text, Spacer, Flex, Button, Image } from '@chakra-ui/react';
 import { BiComment, BiLike } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import { MemeType } from '../types';
@@ -21,15 +21,7 @@ const Meme: React.FC<MemeProps> = ({ meme, totalComments }) => {
         shadow="sm"
       >
         <Box w="100%" h="100%" position="relative" zIndex="100">
-          <img
-            alt="dp"
-            style={{
-              maxWidth: '100%',
-              maxHeight: '100%',
-              objectFit: 'contain',
-            }}
-            src={meme.image}
-          />
+          <Image alt="meme image" w="full" h="full" src={meme.image} />
         </Box>
         <Box
           position="absolute"

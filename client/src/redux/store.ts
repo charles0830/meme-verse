@@ -7,13 +7,19 @@ import {
   loginReducer,
   registerReducer,
 } from './reducers/UserReducer';
-import { getMemesReducer } from './reducers/MemeReducer';
+import {
+  getCommentsReducer,
+  getMemeReducer,
+  getMemesReducer,
+} from './reducers/MemeReducer';
 
 const reducer = combineReducers({
   auth: loginReducer,
   register: registerReducer,
   profileGet: getProfileReducer,
   memesGet: getMemesReducer,
+  memeGet: getMemeReducer,
+  commentsGet: getCommentsReducer,
 });
 
 const verifyToken = (token: string, lsItem: string): boolean => {

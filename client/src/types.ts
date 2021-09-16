@@ -7,3 +7,11 @@ export type MemeType = {
   user: UserType;
   createdAt: string;
 };
+
+export type CommentType = {
+  _id: string;
+  memeId: string;
+  comment: string;
+  user: string;
+  createdAt: string;
+};

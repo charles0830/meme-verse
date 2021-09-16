@@ -1,7 +1,7 @@
 import { model, Schema, Types } from 'mongoose';
 
 interface Comment {
-  memeId: typeof Types.ObjectId;
+  memeId: any;
   comment: string;
   userId: string;
 }

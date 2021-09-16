@@ -3,6 +3,8 @@ import {
   commentOnMeme,
   createMeme,
   deleteMeme,
+  getComments,
+  getMeme,
   getMemes,
 } from '../controller/MemeController';
 import { protect } from '../middleware/authMiddleware';
@@ -12,8 +14,11 @@ const router: Router = express.Router();
 // create meme & get memes
 router.route('/').post(protect, createMeme).get(protect, getMemes);
 // comment on meme
-router.route('/:memeId/comment').post(protect, commentOnMeme);
+router
+  .route('/:memeId/comments')
+  .post(protect, commentOnMeme)
+  .get(protect, getComments);
 // delete meme
-router.route('/:memeId').delete(protect, deleteMeme);
+router.route('/:memeId').delete(protect, deleteMeme).get(protect, getMeme);
 
 export default router;
