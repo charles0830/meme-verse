@@ -33,7 +33,7 @@ const Feed = () => {
   }, [dispatch]);
 
   const submitMemeHandler = () => {
-    if (newMemeLink !== '') {
+    if (newMemeLink !== '' && newMemeLink.includes('/') && newMemeLink.includes('.')) {
       dispatch(createMeme(newMemeLink));
       setNewMeme('');
     }
