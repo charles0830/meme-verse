@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "dev:server": "nodemon dist/index",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "build": "yarn install && tsc"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

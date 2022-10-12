@@ -7,7 +7,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "build": "yarn --cwd ./client/ build && yarn --cwd ./server/ build"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
