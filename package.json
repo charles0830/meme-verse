@@ -8,11 +8,16 @@
   "private": true,
   "scripts": {
     "postinstall": "husky install",
+    "install:all": "yarn --cwd ./client/ install && yarn --cwd ./server/ install",
     "build": "yarn --cwd ./client/ build && yarn --cwd ./server/ build"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
     "husky": "^7.0.2"
-  }
+  },
+  "workspaces": [
+    "client",
+    "meme-verse-server-shiha6"
+  ]
 }
