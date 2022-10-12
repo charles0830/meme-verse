@@ -1,7 +1,8 @@
 import { Box, Heading, Button } from '@chakra-ui/react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-const LandingPage = () => {
+const LandingPage: React.FC = () => {
   return (
     <Box mt="5" p="2" w="60%">
       <Heading fontWeight="black" mb="3" size="4xl">

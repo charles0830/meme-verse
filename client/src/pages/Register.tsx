@@ -1,6 +1,6 @@
 import { Box, Flex, Alert, AlertIcon, Button, Spacer } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import * as yup from 'yup';
@@ -9,7 +9,7 @@ import Wrapper from '../components/Wrapper';
 import { register } from '../redux/actions/UserAction';
 import { useAppSelector } from '../utils/reduxHook';
 
-const Register = () => {
+const Register: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 

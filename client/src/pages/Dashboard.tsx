@@ -1,11 +1,12 @@
 import { Box } from '@chakra-ui/react';
+import React from 'react';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
-import MemeDetails from './MemeDetails';
 import RightSidebar from '../components/RightSidebar';
 import Feed from './Feed';
+import MemeDetails from './MemeDetails';
 import Profile from './Profile';
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
   const { path } = useRouteMatch();
 
   return (

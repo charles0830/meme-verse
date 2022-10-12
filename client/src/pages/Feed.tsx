@@ -18,7 +18,7 @@ import Meme from '../components/Meme';
 import { createMeme, getMemes } from '../redux/actions/MemeAction';
 import { useAppSelector } from '../utils/reduxHook';
 
-const Feed = () => {
+const Feed: React.FC = () => {
   const [uploading, setUploading] = useState(false);
   const { colorMode } = useColorMode();
 
@@ -33,7 +33,11 @@ const Feed = () => {
   }, [dispatch]);
 
   const submitMemeHandler = () => {
-    if (newMemeLink !== '' && newMemeLink.includes('/') && newMemeLink.includes('.')) {
+    if (
+      newMemeLink !== '' &&
+      newMemeLink.includes('/') &&
+      newMemeLink.includes('.')
+    ) {
       dispatch(createMeme(newMemeLink));
       setNewMeme('');
     }

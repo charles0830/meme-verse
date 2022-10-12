@@ -1,13 +1,14 @@
 import {
   Box,
-  Spacer,
-  Heading,
-  Flex,
   Button,
+  Flex,
+  Heading,
   IconButton,
+  Spacer,
   Text,
   useColorMode,
 } from '@chakra-ui/react';
+import React from 'react';
 import { AiFillGithub } from 'react-icons/ai';
 import { BiLogIn, BiLogOut } from 'react-icons/bi';
 import { IoSunnyOutline } from 'react-icons/io5';
@@ -16,7 +17,7 @@ import { Link } from 'react-router-dom';
 import { devSignout } from '../redux/actions/UserAction';
 import { useAppSelector } from '../utils/reduxHook';
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
   const { toggleColorMode } = useColorMode();
 
   const dispatch = useDispatch();
