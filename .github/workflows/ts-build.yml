@@ -1,25 +1,25 @@
-name: TypeScript build action
+name: Node.js CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
 
-branches:
-  - master
 jobs:
-  install_dependencies:
-    name: Install dependencies
-    runs_on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-      - run: yarn install
   build:
-    name: build typeScript
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies and build
+      - run: yarn install
       - run: yarn build
